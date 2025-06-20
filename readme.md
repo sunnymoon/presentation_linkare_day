@@ -1,4 +1,5 @@
-# 1. Install crc
+=================== by JP =====================
+# 1. Install crc 
 
 ## 1.1 Download the binaries and pull secret
 Access https://console.redhat.com/openshift/create/local 
@@ -93,6 +94,8 @@ If you need to destroy, use
 ./crc-linux/crc cleanup (doesn't delete the cluster, but cleans up your OS settings)
 
 
+=================== by AL =====================
+
 # 2. create github projects (github cli)
 
 ## 2.1 create supporting structures
@@ -160,6 +163,7 @@ npm dev
 npm build 
 npm preview 
 
+=================== by JP =====================
 
 ## 3.3 use vscode to implement CRUD on quarkus 
 ... Visual Studio code demo ... 
@@ -187,9 +191,13 @@ do set the background of the card to transparent instead on the detail page as w
 in dev mode I want to run against localhost:8080 fetch, but in prod mode I want to run against a base address of loty-be.apps-crc.testing. 
 '''
 
+=================== by AL =====================
+
 # 4. deploy in crc (s2i)
 
 ## 4.1 deploy the backend 
+
+oc new project mlga
 
 oc new-app openshift/java:openjdk-17-ubi8~https://github.com/sunnymoon/loty-be --name=loty-be --labels=app=loty --strategy=source --context-dir=/
 oc get builds 
@@ -217,6 +225,7 @@ oc new-app openshift/nodejs:20-ubi9-minimal~https://github.com/sunnymoon/loty-fe
 
 oc get builds 
 oc get builds/loty-fe-1
+oc describe builds/loty-fe-1
 oc logs -f builds/loty-fe-1 
 
 oc expose service/loty-fe --hostname=loty.apps-crc.testing

@@ -58,7 +58,7 @@ ln -s crc-linux-2.46.0-amd64 crc-linux
 (depending on your OS, you may need qemu-kvm if not already installed)
 
 ## 1.4 Avoid telemetry (optional - adjust for your own machine)
-> ./crc-linux/crc config set consent-telemetry
+> ./crc-linux/crc config set consent-telemetry no
 > ./crc-linux/crc config set memory 20480
 > ./crc-linux/crc config set cpus 6
 > ./crc-linux/crc config set disk-size 200
@@ -101,7 +101,7 @@ The server is accessible via web console at:
 
 Log in as administrator:
   Username: kubeadmin
-  Password: EPgz4-bBjs5-PUgzI-GprNB
+  Password: efI6e-Wyzg6-RUJPm-VSqSa
 
 Log in as user:
   Username: developer
@@ -114,7 +114,7 @@ Use the 'oc' command line interface:
 
 So you can start by executing 
 eval $(./crc-linux/crc oc-env)
-oc  -u developer https://api.crc.testing:6443 (password is "developer")
+oc login -u developer https://api.crc.testing:6443 (password is "developer")
 
 Which will show you something like 
 
@@ -157,7 +157,7 @@ Give it a run
 ./mvnw quarkus:run
 
 ## 2.2 create frontend app (npm cli)
-npm create vue loty-fe
+npm create vue@latest loty-fe
 
 nvm use node 20.10.0 (I had to switch to the latest node...)
 npm install 
@@ -200,7 +200,7 @@ To show how we can speed things up even more, I’ll hand it over again to José
 
 <mark>=================== by JP =====================</mark>
 
-## 3.3 use vscode to implement CRUD on quarkus 
+## 3.3 use vscode to implement CRUD on quarkus and UI 
 ... Visual Studio code demo ... 
 
 
@@ -211,7 +211,7 @@ Create a rest CRUD endpoints on base path /api/v1/loty with quarkus-rest and ove
 '''
 please remove the demo content from this vue app
 
-Please call the http://localhost:8080/api/v1/loty endpoint to get a list of Linkarean Of The Year in json format with id, name and year. For them, format a flowing set of cards with just the year as titlewith a bounding box in blue. Please make the cards are clickable to a new route /{year} where you invoke the http://localhost:8080/api/v1/loty/year/{year} endpoint and you format the year as title and name in regular text unless it is the currrent year where you should format the name in strong.
+Please call the http://localhost:8080/api/v1/loty endpoint to get a list of Linkarean Of The Year in json format with id, name and year. For them, format a flowing set of cards with just the year as title with a bounding box in blue. Please make the cards clickable to a new route /{year} where you invoke the http://localhost:8080/api/v1/loty/year/{year} endpoint and you format the year as title and name in regular text unless it is the currrent year where you should format the name in strong.
 
 
 Please change the detail page to format the name in h1 but keep the rule with strong for the currrent year. If it is the current year, please add some twinkling effect as well on the detail page.

@@ -1,10 +1,3 @@
-
-introdution:
-objective - present accelerating tools for development and deployment
-loty - linkare of the year be quarkus, fe vue
-4 parts presentation (discribe each)
-
-
 # Introduction
 
 ## Objective

@@ -133,7 +133,7 @@ If you need to destroy, use
 <mark>both need to create the project</mark>
 
 lets start to create the project mlga
->oc new project mlga
+>oc new-project mlga
 
 <mark>=================== by AL =====================</mark>
 

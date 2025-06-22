@@ -1,5 +1,42 @@
-=================== by JP =====================
+
+introdution:
+objective - present accelerating tools for development and deployment
+loty - linkare of the year be quarkus, fe vue
+4 parts presentation (discribe each)
+
+
+# Introduction
+
+## Objective
+The objective of this presentation is to showcase a set of modern tools that significantly accelerate the development and deployment of applications. By leveraging integrated development environments, automation, and container platforms, developers can streamline their workflows and deliver faster, more efficiently.
+
+Demo App: Loty
+To demonstrate these tools in action, we'll build a simple application called Loty - Linkarean of the year. The backend will be developed using Quarkus, a lightweight, Kubernetes-native Java framework—while the frontend will be created with Vue.js, a progressive JavaScript framework. This demo will focus on simplicity and speed to highlight the power of these tools.
+
+## Presentation Structure – 4 Key Parts
+
+**CRC Installation (OpenShift Local)**
+
+We'll begin by setting up CRC (CodeReady Containers), a local OpenShift environment. This allows us to run a full OpenShift cluster on a developer machine, providing a realistic platform for testing and deploying applications.
+
+**Project and Repository Setup**
+
+Next, we'll create two GitHub repositories and initialize both projects structure, the Quarkus backend and Vue frontend. 
+
+**Development with GitHub Copilot**
+
+We'll then use GitHub Copilot, an AI pair programmer, to assist in writing code for both the frontend and backend. This step demonstrates how AI can accelerate development by suggesting boilerplate code, functions, and even entire logic blocks.
+
+**Deployment Using OpenShift S2I (Source-to-Image)**
+
+Finally, we’ll deploy the application using OpenShift’s S2I (Source-to-Image) process via the oc new-app command. This tool simplifies container image creation directly from source code, enabling fast, repeatable deployments.
+
+
+
+<mark>=================== BY JP =====================</mark>
+
 # 1. Install crc 
+<mark>NOTA! START THE CRC BEFORE ANYTHING ELSE</mark>
 
 ## 1.1 Download the binaries and pull secret
 Access https://console.redhat.com/openshift/create/local 
@@ -93,48 +130,19 @@ If you need to destroy, use
 ./crc-linux/crc delete (just deletes the cluster instance, does not cleanup your OS of other settings)
 ./crc-linux/crc cleanup (doesn't delete the cluster, but cleans up your OS settings)
 
+<mark>both need to create the project</mark>
 
-=================== by AL =====================
+lets start to create the project mlga
+>oc new project mlga
 
-# 2. create github projects (github cli)
+<mark>=================== by AL =====================</mark>
 
-## 2.1 create supporting structures
-mkdir {loty-be,loty-fe}
-touch {loty-be,loty-fe}/readme.md
-git init loty-be
-git init loty-fe
-cd loty-be
-git config user.email 4356648+sunnymoon@users.noreply.github.com
-git add readme.md
-git commit -m"repo creation"
-cd ../loty-fe
-git config user.email 4356648+sunnymoon@users.noreply.github.com 
-git add readme.md
-git commit -m"repo creation"
-
-## 2.2 create github (public???) repositories 
-
-Check https://github.com/cli/cli#installation and then do 
-gh auth login (it will spawn a browser for auth)
-
-cd ../loty-be
-gh repo create -d "Linkarean Of The Year - Backend" --public --push -r loty-be -s .
-cd ../loty-fe
-gh repo create -d "Linkarean Of The Year - Frontend" --public --push -r loty-fe -s .
-cd ../loty-be
-
-# 3 create apps 
+# 2 create apps 
 
 Install quarkus cli first... : https://quarkus.io/guides/cli-tooling
 
-## 3.1 create backend app (quarkus cli) 
-quarkus create app com.linkare.loty:loty-be:1.0.0-SNAPSHOT --maven --java=21 --no-dockerfiles --package-name=com.linkare.loty.be -x quarkus-rest -x quarkus-jdbc-sqlite -x quarkus-smallrye-metrics -x quarkus-smallrye-health
-mv loty-be/* .
-mv loty-be/.* .
-rm -rf loty-be
-git add . 
-git commit -m"first quarkus impl" 
-git push
+## 2.1 create backend app (quarkus cli) 
+quarkus create app com.linkare.loty:loty-be:1.0.0-SNAPSHOT --maven --java=17 --no-dockerfiles --package-name=com.linkare.loty.be -x quarkus-rest -x quarkus-jdbc-sqlite -x quarkus-smallrye-metrics -x quarkus-smallrye-health
 
 Give it a spin 
 ./mvnw quarkus:dev 
@@ -148,11 +156,8 @@ Give it a build
 Give it a run 
 ./mvnw quarkus:run
 
-## 3.2 create frontend app (yarn cli)
+## 2.2 create frontend app (npm cli)
 npm create vue loty-fe
-mv loty-fe/* .
-mv loty-fe/.* .
-rm -rf loty-fe
 
 nvm use node 20.10.0 (I had to switch to the latest node...)
 npm install 
@@ -163,7 +168,37 @@ npm dev
 npm build 
 npm preview 
 
-=================== by JP =====================
+# 3. create github projects (github cli)
+
+## 3.1 create supporting structures
+cd loty-be
+git init
+git add . 
+git commit -m"initial backend impl" 
+git push
+
+cd loty-fe
+git init 
+git add .
+git commit -m"initial frontend impl" 
+git push
+
+## 3.2 create github (public???) repositories 
+
+Check https://github.com/cli/cli#installation and then do 
+gh auth login (it will spawn a browser for auth)
+
+cd ../loty-be
+gh repo create -d "Linkarean Of The Year - Backend" --public --push -r loty-be -s .
+cd ../loty-fe
+gh repo create -d "Linkarean Of The Year - Frontend" --public --push -r loty-fe -s .
+cd ../loty-be
+
+
+Now that we’ve set up our GitHub repository and initialized both the Quarkus backend and Vue frontend projects, it's time to dive into the actual development.
+To show how we can speed things up even more, I’ll hand it over again to José Pedro, who will demonstrate the usage of GitHub Copilot to rapidly build out both application with AI-assisted coding.
+
+<mark>=================== by JP =====================</mark>
 
 ## 3.3 use vscode to implement CRUD on quarkus 
 ... Visual Studio code demo ... 
@@ -192,30 +227,41 @@ in dev mode I want to run against localhost:8080 fetch, but in prod mode I want 
 '''
 
 =================== by AL =====================
+TODO: explicar pre-baked app
 
 # 4. deploy in crc (s2i)
 
 ## 4.1 deploy the backend 
+Alright, now that the application is ready, let’s talk about deployment.
 
-oc new project mlga
+So, what do we usually need to do to deploy an app to Kubernetes or OpenShift?
+Well… first, we’d need to containerize the app by writing a Dockerfile,
+then build the image with docker build,
+push it to a registry like Docker Hub or Quay,
+then maybe write a Helm chart, configure deployments, services, routes…
+
+Just kidding!
+
+Thanks to OpenShift’s Source-to-Image (S2I) support, we can skip all of that and deploy directly from our source code with a single command:
 
 oc new-app openshift/java:openjdk-17-ubi8~https://github.com/sunnymoon/loty-be --name=loty-be --labels=app=loty --strategy=source --context-dir=/
+
+TODO: explain the options...
+TODO: com base na image build X (what is an imagem build?)
+TODO: The --strategy=source flag tells OpenShift to use the S2I build process, ....
+
+It’s a fast and developer-friendly way to go from code to running app in minutes.
+
 oc get builds 
 oc get builds/loty-be-1
 oc logs -f builds/loty-be-1 
 
-oc expose service/loty-be (not the right way, though)
-oc get route 
-curl -s -k http://loty-be-mlga.apps-crc.testing/api/v1/loty | jq 
-
-curl -s -k -v -X POST --data '{ "year": 1960, "name": "testing"}' -H "Content-type: application/json"  http://loty-be-mlga.apps-crc.testing/api/v1/loty 
-
-curl -s -k http://loty-be-mlga.apps-crc.testing/api/v1/loty/year/1960 | jq
-
-oc delete routes.route.openshift.io  loty-be
 oc expose service/loty-be --hostname=loty-be.apps-crc.testing
 
 curl -s -k http://loty-be.apps-crc.testing/api/v1/loty | jq 
+
+curl -s -k -v -X POST --data '{ "year": 1960, "name": "testing"}' -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty 
+
 curl -s -k http://loty-be.apps-crc.testing/api/v1/loty/year/1960 | jq 
 
 
@@ -235,3 +281,22 @@ curl -s -k -v -X PUT --data @2024-reset.json -H "Content-type: application/json"
 
 curl -s -k -v -X PUT --data @2024.json -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty/16  --output /dev/null
 
+
+## Conclusion
+What we’ve shown today is a simplified, streamlined path, an example of how fast you can go from source code to a running application using tools like OpenShift S2I, GitHub, CRC, and copilot.
+
+While it’s not production-grade CI/CD, it’s a powerful way to prototype, test, or even run lightweight apps quickly in a real Kubernetes environment.
+In other oportunities we will for sure talk about tools like Tekton, Argo CD, or Backstage. And the usage of hooks for instance...
+
+One more important thing:
+Everything we did today was from the command line, no clicks, no dashboards, no manual configs.
+
+That’s not just for show, it means everything we’ve done is scriptable and easily automatable.
+
+Whether it’s setting up the cluster, initializing the project, or building and deploying the apps, every step can be integrated into scripts, pipelines, or GitHub Actions later.
+
+It’s a great foundation for building toward real automation and CI/CD.
+
+
+TODO! remove repos before presentation.
+explain - everything from command line. close to automation. we can quicky automate everything like this

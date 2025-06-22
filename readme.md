@@ -1,9 +1,8 @@
 # Pre presentation cleanup
 Don't forget to:
-1. start crc
-1. remove existing github repos that we are going to create during presentation
-1. remove services, builds, projects, every openshift object that might exist
-1. ....
+1. start crc (AL beforehand, JP at presentation start)
+2. remove existing github repos that we are going to create during presentation (AL only)
+3. remove services, builds, projects, every openshift object that might exist
 
 # Introduction
 
@@ -11,7 +10,7 @@ Don't forget to:
 The objective of this presentation is to showcase a set of modern tools that significantly accelerate the development and deployment of applications. By leveraging integrated development environments, automation, and container platforms, developers can streamline their workflows and deliver faster, more efficiently.
 
 Demo App: Loty
-To demonstrate these tools in action, we'll build a simple application called Loty - Linkarean of the year. The backend will be developed using Quarkus, a lightweight, Kubernetes-native Java framework—while the frontend will be created with Vue.js, a progressive JavaScript framework. This demo will focus on simplicity and speed to highlight the power of these tools.
+To demonstrate these tools in action, we'll build a simple application called Loty - Linkarean of the year. The backend will be developed using Quarkus, a lightweight, Kubernetes-native Java framework—while the frontend will be created with Vue, a progressive JavaScript framework. This demo will focus on simplicity and speed to highlight the power of these tools.
 
 ## Presentation Structure – 4 Key Parts
 
@@ -109,7 +108,7 @@ Log in as user:
 
 Use the 'oc' command line interface:
   $ eval $(crc oc-env)
-  $ oc login -u developer https://api.crc.testing:6443  
+  $ oc login -u developer https://api.crc.testing:6443
 '''
 
 So you can start by executing 

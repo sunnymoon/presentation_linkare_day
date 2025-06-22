@@ -293,7 +293,7 @@ Everything we did today was from the command line, no clicks, no dashboards, no 
 
 That’s not just for show, it means everything we’ve done is scriptable and easily automatable.
 
-Whether it’s setting up the cluster, initializing the project, or building and deploying the apps, every step can be integrated into scripts, pipelines, or GitHub Actions later.
+Whether it’s setting up the cluster, initializing the project, or building and deploying the apps, every step can be integrated into scripts, pipelines, to build developer portals.
 
 It’s a great foundation for building toward real automation and CI/CD.
 

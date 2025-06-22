@@ -1,3 +1,10 @@
+# Pre presentation cleanup
+Don't forget to:
+1. start crc
+1. remove existing github repos that we are going to create during presentation
+1. remove services, builds, projects, every openshift object that might exist
+1. ....
+
 # Introduction
 
 ## Objective
@@ -290,6 +297,3 @@ Whether it’s setting up the cluster, initializing the project, or building and
 
 It’s a great foundation for building toward real automation and CI/CD.
 
-
-TODO! remove repos before presentation.
-explain - everything from command line. close to automation. we can quicky automate everything like this

@@ -139,16 +139,23 @@ lets start to create the project mlga
 
 # 2 create apps 
 
+We got a request for a fresh app a while ago, and it’s supposed to go live today.
+the problem was we put it off longer than we should have and we havent even started.
+Now we need all the help we can get, smart tools, maybe even a little AI magic, to make it happen.
+
+
 We start by installing the Quarkus CLI, which makes it easier to scaffold and manage Quarkus applications. You can follow the official guide based on your OS.
 https://quarkus.io/guides/cli-tooling
 
 
 ## 2.1 create backend app (quarkus cli) 
-Now we’ll scaffold the backend app using the Quarkus CLI. I’m choosing Java 17, SQLite for simplicity, and adding extensions for REST, metrics, and health endpoints. 
-The app is created with Maven as the build tool, and we also specify the package
+Now we’ll scaffold the backend app using the Quarkus CLI. 
+> quarkus create app com.linkare.loty:loty-be:1.0.0-SNAPSHOT --maven --java=17 --no-dockerfiles --package-name=com.linkare.loty.be -x quarkus-rest -x quarkus-jdbc-sqlite -x quarkus-smallrye-metrics -x quarkus-smallrye-health
+
+I’m choosing Java 17, SQLite for simplicity, and adding extensions for REST, metrics, and health endpoints. 
+The app is created with Maven as the build tool
 We specifically specify that we don't want dockerfiles since we are going to take care of that later.
 
-> quarkus create app com.linkare.loty:loty-be:1.0.0-SNAPSHOT --maven --java=17 --no-dockerfiles --package-name=com.linkare.loty.be -x quarkus-rest -x quarkus-jdbc-sqlite -x quarkus-smallrye-metrics -x quarkus-smallrye-health
 > cd loty-be
 
 Let’s spin up the backend in development mode.

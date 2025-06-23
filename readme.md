@@ -228,8 +228,11 @@ npm run preview
 ## 3.1 create supporting structures
 
 Now we initialize a Git repo for the backend and commit the files
-This helps with collaboration and version control.
+so we can have version control.
 
+- We initialize the repo, 
+- add the files to staging  
+- and create the first commit
 ```sh
 cd loty-be
 git init
@@ -244,9 +247,11 @@ git add .
 git commit -m"initial frontend impl" 
 ```
 ## 3.2 create github (public???) repositories 
-the next step is to make our projects collaborative and that means pushing them to some source code management, in our case we are goint to use GitHub.
+So far, everything I've done is local. The repository only exists on my machine. This gives me version control, meaning I can track changes, go back to previous versions, and manage my code history.
 
-Instead of manually creating the repositories in the GitHub web interface, we’re using the GitHub CLI.
+But if I need to collaborate with others, so we are going to to share this repository using GitHub.
+
+But instead of manually creating the repositories in the GitHub web interface, we’re using the GitHub CLI.
 
 The gh CLI lets us manage repositories, issues, pull requests, and more, right from the terminal, which is great for automation and scripting.
 

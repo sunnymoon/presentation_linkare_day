@@ -141,7 +141,7 @@ lets start to create the project mlga
 
 We got a request for a new app a while ago, and it's supposed to go live today.
 
-The problem? We put it off longer than we should have — and we haven’t even started it yet. 😬
+The problem? We put it off longer than we should have, and we haven’t even started it yet....
 
 So now we need all the help we can get: smart tools, and maybe even a little AI magic, to pull this off in time.
 
@@ -369,7 +369,7 @@ lets see what we got in our openshift
 oc get all
 ```
 
-Our service is running and available internally within OpenShift — that means other apps and components inside the cluster can talk to it just fine.
+Our service is running and available internally within OpenShift, that means other apps and components inside the cluster can talk to it just fine.
 
 But to access it from outside the cluster, like from our browser, we need to expose it externally.
 For that, OpenShift provides a resource called a Route which creates an external URL and handles the traffic routing to our service.

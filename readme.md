@@ -137,60 +137,92 @@ lets start to create the project mlga
 
 <mark>=================== by AL =====================</mark>
 
-# 2 create apps 
+# 🚀 2. Create Apps
 
-We got a request for a new app a while ago, and it’s supposed to go live today.
-the problem was we put it off longer than we should have and we havent even started it.
-Now we need all the help we can get, smart tools, maybe even a little AI magic, to make it happen.
+We got a request for a new app a while ago, and it's supposed to go live today.
 
+The problem? We put it off longer than we should have — and we haven’t even started it yet. 😬
 
-We start by installing the Quarkus CLI, which makes it easier to scaffold and manage Quarkus applications. You can follow the official guide based on your OS.
-https://quarkus.io/guides/cli-tooling
+So now we need all the help we can get: smart tools, and maybe even a little AI magic, to pull this off in time.
 
+---
 
-## 2.1 create backend app (quarkus cli) 
-Now we’ll scaffold the backend app using the Quarkus CLI. 
-> quarkus create app com.linkare.loty:loty-be:1.0.0-SNAPSHOT --maven --java=17 --no-dockerfiles --package-name=com.linkare.loty.be -x quarkus-rest -x quarkus-jdbc-sqlite -x quarkus-smallrye-metrics -x quarkus-smallrye-health
+We’ll start by installing the **Quarkus CLI**, which makes it easier to scaffold and manage Quarkus applications. Just follow the official installation guide for your OS:
 
-We are choosing Java 17, SQLite for simplicity, and adding extensions for REST, metrics, and health endpoints. 
-The app is created with Maven as the build tool
-We specifically specify that we don't want dockerfiles since we are going to take care of that later.
+👉 https://quarkus.io/guides/cli-tooling
 
-> cd loty-be
+---
 
-Let’s spin up the backend in development mode.
-> ./mvnw quarkus:dev 
+## 🔧 2.1 Create Backend App (Quarkus CLI)
+
+Let’s scaffold the backend using the **Quarkus CLI**:
+
+```sh
+quarkus create app com.linkare.loty:loty-be:1.0.0-SNAPSHOT --maven --java=17 --no-dockerfiles --package-name=com.linkare.loty.be -x quarkus-rest -x quarkus-jdbc-sqlite -x quarkus-smallrye-metrics -x quarkus-smallrye-health
+```
+
+Here’s what we’re doing:
+1. using Java 17 for the runtime
+1. using SQLite for simplicity
+1. adding REST extention
+1. and metrics, and health extensions for observability
+1. we want to use Maven as the build tool
+1. and No Dockerfiles since we’ll handle containerization later
+
+We navigate into the newly created project:
+```sh
+cd loty-be
+```
+Now let’s spin up the backend in **development mode**:
+```sh
+./mvnw quarkus:dev 
+```
+
+This launches the app locally on:
 
 http://localhost:8080/
-This is the Dev UI, which helps us explore our endpoints, metrics, health checks, and more.
 
-Once we're happy with development, we build the app...
-> ./mvnw quarkus:build
+From here, you can explore endpoints, metrics, health checks, and more via the Dev UI.
 
-and run it in production mode...
-> ./mvnw quarkus:run
+Once we’re happy with development, we build the app:
+
+```sh
+./mvnw quarkus:build
+```
+and run it in **production mode**
+```sh
+./mvnw quarkus:run
+```
 
 ## 2.2 create frontend app (npm cli)
-Now let’s create the frontend using Vue. This will scaffold a Vue app with Vite.
+Next, we scaffold the frontend using Vue with Vite:
 
-> npm create vue@latest loty-fe
-
-> cd loty-be
-
-> nvm use node 20.10.0 (I had to switch to the latest node...)
+```sh
+npm create vue@latest loty-fe
+```
+```sh
+cd loty-be
+```
+```sh
+nvm use node 20.10.0 (I had to switch to the latest node...)
+```
 
 We install the dependencies...
-> npm install 
-
- and run the dev server...
-> npm run dev
-
+```sh
+npm install 
+```
+and run the dev server...
+```sh
+npm run dev
+```
 Let’s simulate a production build
-> npm run build 
-
+```sh
+npm run build 
+```
 and preview it locally
-> npm run preview 
-
+```sh
+npm run preview 
+```
 # 3. create github projects (github cli)
 
 ## 3.1 create supporting structures
@@ -198,17 +230,19 @@ and preview it locally
 Now we initialize a Git repo for the backend and commit the files
 This helps with collaboration and version control.
 
-> cd loty-be
-> git init
-> git add . 
-> git commit -m"initial backend impl" 
-
+```sh
+cd loty-be
+git init
+git add . 
+git commit -m"initial backend impl" 
+```
 We do the same for the frontend.
-> cd loty-fe
-> git init 
-> git add .
-> git commit -m"initial frontend impl" 
-
+```sh
+cd loty-fe
+git init 
+git add .
+git commit -m"initial frontend impl" 
+```
 ## 3.2 create github (public???) repositories 
 the next step is to make our projects collaborative and that means pushing them to some source code management, in our case we are goint to use GitHub.
 
@@ -217,28 +251,33 @@ Instead of manually creating the repositories in the GitHub web interface, we’
 The gh CLI lets us manage repositories, issues, pull requests, and more, right from the terminal, which is great for automation and scripting.
 
 Check https://github.com/cli/cli#installation 
+
 The first time you need to authenticate with: 
-gh auth login (it will spawn a browser for auth). I'm already authenticated so i don't need to do it now
+gh auth login (it will spawn a browser for auth).
 
 So, we navigate into each project directory
-> cd ../loty-be
-
+```sh
+cd ../loty-be
+```
 then run gh repo create with the --push and --source options.
-> gh repo create -d "Linkarean Of The Year - Backend" --public --push --remote loty-be --source .
- 
+```sh
+gh repo create -d "Linkarean Of The Year - Backend" --public --push --remote loty-be --source .
+``` 
 This creates the repo remotely on GitHub, links it to our local directory, and pushes the code, all in one step.
 We’re keeping the repo public for simplicity, so we don’t have to deal with secret management or authentication setup right now.
 
 We do the same for the frontend
+```sh
 cd ../loty-fe
 gh repo create -d "Linkarean Of The Year - Frontend" --public --push --remote loty-fe --source .
-cd ../loty-be
+```
 
-To recap, we’ve created two separate applications:
-A Quarkus backend with REST endpoints, health checks, and an embedded SQLite database.
-A Vue frontend built with Vite.
-
-Both apps are now version-controlled and hosted on GitHub.
+To recap, 
+We’ve now:
+- Created a Quarkus backend with REST, health, metrics, and SQLite
+- Built a Vue frontend using Vite
+- Initialized Git for both
+- Published both projects to GitHub
 
 Now that the repositories are initialized and both projects are scaffolded, it’s time to jump into actual development.
 
@@ -288,59 +327,96 @@ Then, we’d build the container image using a tool like docker build or podman 
 push it to a registry like Docker Hub or Quay,
 Finally, we configure deployment manifests, services, and ingress rules, maybe even write a Helm chart to manage these resources.
 
-That sounds like a lot of work... Thanks to OpenShift’s Source-to-Image (S2I) support, we can skip all of that. OpenShift takes our source code, uses a builder image, builds and deploys everything automatically, all with a single command:
+That sounds like a lot of work... lets run just one command instead!
 
-> oc new-app openshift/java:openjdk-17-ubi8~https://github.com/sunnymoon/loty-be --name=loty-be --labels=app=loty --strategy=source --context-dir=/
+```sh 
+oc new-app openshift/java:openjdk-17-ubi8~https://github.com/sunnymoon/loty-be --name=loty-be --labels=app=loty --strategy=source --context-dir=/
+```
 
-We're using oc new-app to kick off a new build and deployment in OpenShift. This command uses the OpenShift-provided Java 17 image as the build image, pulls code from a public GitHub repo, and builds the app using the Source-to-Image strategy. We give the app a name, apply helpful labels, and define where in the repository the source code lives.
+We're using oc new-app to kick off a new build and deployment with support from OpenShift’s Source-to-Image (S2I). This command uses:
+- the OpenShift-provided Java 17 image as the build image, 
+- pulls code from a public GitHub repo, 
+- and builds the app using the Source-to-Image strategy. 
+- We give the app a name, 
+- apply helpful labels, 
+- and define where in the repository the source code lives.
 
-It’s a fast and developer-friendly way to go from code to a running app in minutes.
+**_Lets check what is going on:_**
+```sh 
+oc get builds 
+oc get builds/loty-be-1
+oc logs -f builds/loty-be-1 
+```
 
-> oc get builds 
-> oc get builds/loty-be-1
-> oc logs -f builds/loty-be-1 
+That single command we executed to create the app sets up your application for Source-to-Image (S2I) deployment in OpenShift:
 
-This method:
-Automatically builds the app using the selected builder image (java:openjdk-17-ubi8).
-Deploys the built image into a pod.
-Creates the necessary OpenShift resources: BuildConfig, DeploymentConfig, Service, etc.
-Avoids manual containerization, while still allowing you to customize the S2I process if needed.
+- Creates essential OpenShift resources:
+It automatically generates a BuildConfig, ImageStream, DeploymentConfig, and a Service for your app.
+- Triggers a build using the provided Git repo and the selected builder image:
+openshift/java:openjdk-17-ubi8
+- Builds your source code into a runnable container image using the S2I strategy.
+- Deploys the app by launching a pod based on the newly built image.
+
+This approach:
+- Avoids manual Dockerfile creation or container builds.
+- Speeds up development by using OpenShift’s built-in build pipeline.
+- Still allows customization of the S2I process later (e.g., environment variables, custom scripts).
+- Is a fast and developer-friendly way to go from code to a running app in minutes.
 
 lets see what we got in our openshift
-> oc get all
+```sh 
+oc get all
+```
 
 Our service is running and available internally within OpenShift — that means other apps and components inside the cluster can talk to it just fine.
-But to access it from outside the cluster, like from our browser or external users, we need to expose it externally.
-For that, OpenShift provides a resource called a Route, which creates an external URL and handles the traffic routing to our service.
-We can create this easily with the oc expose command.
-> oc expose service/loty-be --hostname=loty-be.apps-crc.testing
 
+But to access it from outside the cluster, like from our browser, we need to expose it externally.
+For that, OpenShift provides a resource called a Route which creates an external URL and handles the traffic routing to our service.
+
+We can create this easily with the oc expose command.
+```sh 
+oc expose service/loty-be --hostname=loty-be.apps-crc.testing
+```
 If we didn’t specify a hostname, OpenShift would automatically generate a sensible default hostname based on the service name, project namespace, and cluster domain, in this case would be something like loty-be-mlga.apps-crc.testing.
 
 Let’s test our app by fetching all existing entries.
-> curl -s -k http://loty-be.apps-crc.testing/api/v1/loty | jq 
+```sh 
+curl -s -k http://loty-be.apps-crc.testing/api/v1/loty | jq 
+```
 
 Now, let’s add a new entry with year 1960 and name "testing".
-> curl -s -k -v -X POST --data '{ "year": 1960, "name": "testing"}' -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty 
+```sh 
+curl -s -k -v -X POST --data '{ "year": 1960, "name": "testing"}' -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty 
+```
 
 Finally, we’ll check that the entry we just added is stored correctly by querying it directly.
-> curl -s -k http://loty-be.apps-crc.testing/api/v1/loty/year/1960 | jq 
-
+```sh 
+curl -s -k http://loty-be.apps-crc.testing/api/v1/loty/year/1960 | jq 
+```
 
 ## 4.2 deploy the frontend ... 
 Lets quicky do the same for the frontend
-> oc new-app openshift/nodejs:20-ubi9-minimal~https://github.com/sunnymoon/loty-fe --name=loty-fe --labels=app=loty --strategy=source --context-dir=/
 
-> oc logs -f builds/loty-fe-1 
+```sh 
+oc new-app openshift/nodejs:20-ubi9-minimal~https://github.com/sunnymoon/loty-fe --name=loty-fe --labels=app=loty --strategy=source --context-dir=/
+``` 
+```sh 
+oc logs -f builds/loty-fe-1 
+```
 
 lets see what we got in our openshift
-> oc get all
+```sh 
+oc get all
+```
 
 Lets expose it
+```sh 
 oc expose service/loty-fe --hostname=loty.apps-crc.testing
-
+```
 We can check it out in the web interface
-> crc console
+```sh 
+crc console
+```
 
 ## Conclusion
 What we’ve shown today is a simplified, streamlined path, an example of how fast you can go from zero to source code to a running application using OpenShift, GitHub copilot, and modern developer tools. 

@@ -3,6 +3,7 @@ Don't forget to:
 1. start crc (AL beforehand, JP at presentation start)
 2. remove existing github repos that we are going to create during presentation (AL only)
 3. remove services, builds, projects, every openshift object that might exist
+1. check crc config...
 
 # Introduction
 
@@ -143,29 +144,33 @@ Install quarkus cli first... : https://quarkus.io/guides/cli-tooling
 ## 2.1 create backend app (quarkus cli) 
 quarkus create app com.linkare.loty:loty-be:1.0.0-SNAPSHOT --maven --java=17 --no-dockerfiles --package-name=com.linkare.loty.be -x quarkus-rest -x quarkus-jdbc-sqlite -x quarkus-smallrye-metrics -x quarkus-smallrye-health
 
+> cd loty-be
+
 Give it a spin 
-./mvnw quarkus:dev 
+> ./mvnw quarkus:dev 
 
 http://localhost:8080/
 check dev-ui and dashbard and other helping tools 
 
 Give it a build 
-./mvnw quarkus:build
+> ./mvnw quarkus:build
 
 Give it a run 
-./mvnw quarkus:run
+> ./mvnw quarkus:run
 
 ## 2.2 create frontend app (npm cli)
-npm create vue@latest loty-fe
+> npm create vue@latest loty-fe
 
-nvm use node 20.10.0 (I had to switch to the latest node...)
-npm install 
+> cd loty-be
+
+> nvm use node 20.10.0 (I had to switch to the latest node...)
+> npm install 
 
 (Give it a spin)
-npm dev
+> npm run dev
 
-npm build 
-npm preview 
+> npm run build 
+> npm run preview 
 
 # 3. create github projects (github cli)
 
@@ -174,13 +179,11 @@ cd loty-be
 git init
 git add . 
 git commit -m"initial backend impl" 
-git push
 
 cd loty-fe
 git init 
 git add .
 git commit -m"initial frontend impl" 
-git push
 
 ## 3.2 create github (public???) repositories 
 
@@ -188,14 +191,20 @@ Check https://github.com/cli/cli#installation and then do
 gh auth login (it will spawn a browser for auth)
 
 cd ../loty-be
-gh repo create -d "Linkarean Of The Year - Backend" --public --push -r loty-be -s .
+gh repo create -d "Linkarean Of The Year - Backend" --public --push --remote loty-be --source .
 cd ../loty-fe
-gh repo create -d "Linkarean Of The Year - Frontend" --public --push -r loty-fe -s .
+gh repo create -d "Linkarean Of The Year - Frontend" --public --push --remote loty-fe --source .
 cd ../loty-be
 
+To recap, we’ve created two separate applications:
+A Quarkus backend with REST endpoints, health checks, and an embedded SQLite database.
+A Vue frontend built with Vite.
 
-Now that we’ve set up our GitHub repository and initialized both the Quarkus backend and Vue frontend projects, it's time to dive into the actual development.
-To show how we can speed things up even more, I’ll hand it over again to José Pedro, who will demonstrate the usage of GitHub Copilot to rapidly build out both application with AI-assisted coding.
+Both apps are now version-controlled and hosted on GitHub.
+
+Now that the repositories are initialized and both projects are scaffolded, it’s time to jump into actual development.
+
+To show how we can accelerate that process even further, I’ll hand it over to José Pedro, who will demonstrate how to use GitHub Copilot to rapidly build out both applications with AI-assisted coding.
 
 <mark>=================== by JP =====================</mark>
 
@@ -243,7 +252,7 @@ Just kidding!
 
 Thanks to OpenShift’s Source-to-Image (S2I) support, we can skip all of that and deploy directly from our source code with a single command:
 
-oc new-app openshift/java:openjdk-17-ubi8~https://github.com/sunnymoon/loty-be --name=loty-be --labels=app=loty --strategy=source --context-dir=/
+> oc new-app openshift/java:openjdk-17-ubi8~https://github.com/sunnymoon/loty-be --name=loty-be --labels=app=loty --strategy=source --context-dir=/
 
 TODO: explain the options...
 TODO: com base na image build X (what is an imagem build?)
@@ -251,11 +260,14 @@ TODO: The --strategy=source flag tells OpenShift to use the S2I build process, .
 
 It’s a fast and developer-friendly way to go from code to running app in minutes.
 
-oc get builds 
-oc get builds/loty-be-1
-oc logs -f builds/loty-be-1 
+> oc get builds 
+> oc get builds/loty-be-1
+> oc logs -f builds/loty-be-1 
 
-oc expose service/loty-be --hostname=loty-be.apps-crc.testing
+lets see what we got in our openshift
+> oc get all
+
+> oc expose service/loty-be --hostname=loty-be.apps-crc.testing
 
 curl -s -k http://loty-be.apps-crc.testing/api/v1/loty | jq 
 
@@ -273,8 +285,13 @@ oc get builds/loty-fe-1
 oc describe builds/loty-fe-1
 oc logs -f builds/loty-fe-1 
 
+lets see what we got in our openshift
+> oc get all
+
 oc expose service/loty-fe --hostname=loty.apps-crc.testing
 
+We can check it out in the web interface
+> crc console
 
 curl -s -k -v -X PUT --data @2024-reset.json -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty/16  --output /dev/null
 
@@ -282,17 +299,14 @@ curl -s -k -v -X PUT --data @2024.json -H "Content-type: application/json"  http
 
 
 ## Conclusion
-What we’ve shown today is a simplified, streamlined path, an example of how fast you can go from source code to a running application using tools like OpenShift S2I, GitHub, CRC, and copilot.
+What we’ve shown today is a simplified, streamlined path, an example of how fast you can go from zero to source code to a running application using OpenShift, GitHub copilot, and modern developer tools. 
 
-While it’s not production-grade CI/CD, it’s a powerful way to prototype, test, or even run lightweight apps quickly in a real Kubernetes environment.
-In other oportunities we will for sure talk about tools like Tekton, Argo CD, or Backstage. And the usage of hooks for instance...
+While this may not be a production-grade CI/CD pipeline not is it automated, it’s a powerful and fast way to prototype, test, or even run lightweight applications in a real Kubernetes environment.
+In future sessions, we’ll possible explore tools like Tekton, Argo CD, and Backstage, as well as concepts like hooks and automation to take this workflow closer to production readiness.
 
-One more important thing:
-Everything we did today was from the command line, no clicks, no dashboards, no manual configs.
+One more note
+Everything we did today was from the command line. No clicks no dashboards, no manual configuration (aside from viewing the end results).
 
-That’s not just for show, it means everything we’ve done is scriptable and easily automatable.
+And that’s not just for show. It highlights that everything we’ve done is scriptable, repeatable, and easily automatable.
 
-Whether it’s setting up the cluster, initializing the project, or building and deploying the apps, every step can be integrated into scripts, pipelines, to build developer portals.
-
-It’s a great foundation for building toward real automation and CI/CD.
-
+From setting up the cluster, initializing projects, to building and deploying applications, every step can be integrated into CI/CD pipelines or developer portals to streamline onboarding and boost productivity.

@@ -290,7 +290,8 @@ To show how we can accelerate that process even further, I’ll hand it over bac
 
 
 ''' 
-Create a rest CRUD endpoints on base path /api/v1/loty with quarkus-rest and over a database with sqlite. Loty entity has two attributes, name and year. Make sure the database gets initialized even if it doesn't exist at first access
+i need to implement all CRUD rest endpoints (at base path /api/v1/loty) for an entity called Loty (short for Linkarean of the Year) stored on a sqlite database. The Loty entity should have two fields, year (primary) and name of a person.
+Please create some sample data on a sql file (from years 2010 to 2024) that should be imported at every start of the application.
 '''
 
 '''

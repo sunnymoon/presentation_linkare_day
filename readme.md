@@ -279,7 +279,7 @@ gh repo create -d "Linkarean Of The Year - Frontend" --public --push --remote lo
 
 To recap, 
 We’ve now:
-- Created a Quarkus backend with REST, health, metrics, and SQLite
+- Created a Quarkus backend with REST  and SQLite with health and metrics endpoints
 - Built a Vue frontend using Vite
 - Initialized Git for both
 - Published both projects to GitHub

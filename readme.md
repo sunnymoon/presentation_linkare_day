@@ -11,7 +11,7 @@ Don't forget to:
 The objective of this presentation is to showcase a set of modern tools that significantly accelerate the development and deployment of applications. By leveraging integrated development environments, automation, and container platforms, developers can streamline their workflows and deliver faster, more efficiently.
 
 Demo App: Loty
-To demonstrate these tools in action, we'll build a simple application called Loty - Linkarean of the year. The backend will be developed using Quarkus, a lightweight, Kubernetes-native Java framework—while the frontend will be created with Vue, a progressive JavaScript framework. This demo will focus on simplicity and speed to highlight the power of these tools.
+To demonstrate these tools in action, we'll build a simple application called Loty - Linkarean of the year. The backend will be developed using Quarkus, a lightweight, Kubernetes-native Java framework, while the frontend will be created with Vue, a progressive JavaScript framework. This demo will focus on simplicity and speed to highlight the power of these tools.
 
 ## Presentation Structure – 4 Key Parts
 
@@ -139,59 +139,90 @@ lets start to create the project mlga
 
 # 2 create apps 
 
-Install quarkus cli first... : https://quarkus.io/guides/cli-tooling
+We start by installing the Quarkus CLI, which makes it easier to scaffold and manage Quarkus applications. You can follow the official guide based on your OS.
+https://quarkus.io/guides/cli-tooling
+
 
 ## 2.1 create backend app (quarkus cli) 
-quarkus create app com.linkare.loty:loty-be:1.0.0-SNAPSHOT --maven --java=17 --no-dockerfiles --package-name=com.linkare.loty.be -x quarkus-rest -x quarkus-jdbc-sqlite -x quarkus-smallrye-metrics -x quarkus-smallrye-health
+Now we’ll scaffold the backend app using the Quarkus CLI. I’m choosing Java 17, SQLite for simplicity, and adding extensions for REST, metrics, and health endpoints. 
+The app is created with Maven as the build tool, and we also specify the package
+We specifically specify that we don't want dockerfiles since we are going to take care of that later.
 
+> quarkus create app com.linkare.loty:loty-be:1.0.0-SNAPSHOT --maven --java=17 --no-dockerfiles --package-name=com.linkare.loty.be -x quarkus-rest -x quarkus-jdbc-sqlite -x quarkus-smallrye-metrics -x quarkus-smallrye-health
 > cd loty-be
 
-Give it a spin 
+Let’s spin up the backend in development mode.
 > ./mvnw quarkus:dev 
 
 http://localhost:8080/
-check dev-ui and dashbard and other helping tools 
+This is the Dev UI, which helps us explore our endpoints, metrics, health checks, and more.
 
-Give it a build 
+Once we're happy with development, we build the app...
 > ./mvnw quarkus:build
 
-Give it a run 
+and run it in production mode...
 > ./mvnw quarkus:run
 
 ## 2.2 create frontend app (npm cli)
+Now let’s create the frontend using Vue. This will scaffold a Vue app with Vite.
+
 > npm create vue@latest loty-fe
 
 > cd loty-be
 
 > nvm use node 20.10.0 (I had to switch to the latest node...)
+
+We install the dependencies...
 > npm install 
 
-(Give it a spin)
+ and run the dev server...
 > npm run dev
 
+Let’s simulate a production build
 > npm run build 
+
+and preview it locally
 > npm run preview 
 
 # 3. create github projects (github cli)
 
 ## 3.1 create supporting structures
-cd loty-be
-git init
-git add . 
-git commit -m"initial backend impl" 
 
-cd loty-fe
-git init 
-git add .
-git commit -m"initial frontend impl" 
+Now we initialize a Git repo for the backend and commit the files
+This helps with collaboration and version control.
+
+> cd loty-be
+> git init
+> git add . 
+> git commit -m"initial backend impl" 
+
+We do the same for the frontend.
+> cd loty-fe
+> git init 
+> git add .
+> git commit -m"initial frontend impl" 
 
 ## 3.2 create github (public???) repositories 
+the next step is to make our projects collaborative and that means pushing them to some source code management, in our case we are goint to use GitHub.
 
-Check https://github.com/cli/cli#installation and then do 
-gh auth login (it will spawn a browser for auth)
+Instead of manually creating the repositories in the GitHub web interface, we’re using the GitHub CLI.
 
-cd ../loty-be
-gh repo create -d "Linkarean Of The Year - Backend" --public --push --remote loty-be --source .
+The gh CLI lets us manage repositories, issues, pull requests, and more, right from the terminal, which is great for automation and scripting.
+
+Check https://github.com/cli/cli#installation 
+The first time you need to authenticate with: 
+gh auth login (it will spawn a browser for auth). I'm already authenticated so i don't need to do it now
+
+So, we navigate into each project directory
+> cd ../loty-be
+
+then run gh repo create with the --push and --source options.
+> gh repo create -d "Linkarean Of The Year - Backend" --public --push --remote loty-be --source .
+ 
+This creates the repo remotely on GitHub, links it to our local directory, and pushes the code, all in one step.
+We’re keeping the repo public for simplicity, so we don’t have to deal with secret management or authentication setup right now.
+
+We do the same for the frontend
 cd ../loty-fe
 gh repo create -d "Linkarean Of The Year - Frontend" --public --push --remote loty-fe --source .
 cd ../loty-be
@@ -204,7 +235,7 @@ Both apps are now version-controlled and hosted on GitHub.
 
 Now that the repositories are initialized and both projects are scaffolded, it’s time to jump into actual development.
 
-To show how we can accelerate that process even further, I’ll hand it over to José Pedro, who will demonstrate how to use GitHub Copilot to rapidly build out both applications with AI-assisted coding.
+To show how we can accelerate that process even further, I’ll hand it over back to José Pedro, who will demonstrate how to use GitHub Copilot to rapidly build out both applications with AI-assisted coding.
 
 <mark>=================== by JP =====================</mark>
 
@@ -235,68 +266,74 @@ in dev mode I want to run against localhost:8080 fetch, but in prod mode I want 
 '''
 
 =================== by AL =====================
-TODO: explicar pre-baked app
+Because live builds and live demos don't always play nice, we're taking a page from cooking shows and using a pre-baked app, one we've already prepared earlier and pushed to GitHub.
+
+This version was built using exactly the same steps we’re showing you here today. While some of the AI-generated code suggestions may vary slightly from one session to another, the overall structure and functionality are fully reproducible by following the same process.
 
 # 4. deploy in crc (s2i)
 
 ## 4.1 deploy the backend 
 Alright, now that the application is ready, let’s talk about deployment.
 
-So, what do we usually need to do to deploy an app to Kubernetes or OpenShift?
-Well… first, we’d need to containerize the app by writing a Dockerfile,
-then build the image with docker build,
+So, what do we usually need to do to deploy an app to Kubernetes or OpenShift in our case today?
+Well… first, we’d need to containerize the app by writing a Dockerfile or Containerfile 
+Then, we’d build the container image using a tool like docker build or podman build.
 push it to a registry like Docker Hub or Quay,
-then maybe write a Helm chart, configure deployments, services, routes…
+Finally, we configure deployment manifests, services, and ingress rules, maybe even write a Helm chart to manage these resources.
 
-Just kidding!
-
-Thanks to OpenShift’s Source-to-Image (S2I) support, we can skip all of that and deploy directly from our source code with a single command:
+That sounds like a lot of work... Thanks to OpenShift’s Source-to-Image (S2I) support, we can skip all of that. OpenShift takes our source code, uses a builder image, builds and deploys everything automatically, all with a single command:
 
 > oc new-app openshift/java:openjdk-17-ubi8~https://github.com/sunnymoon/loty-be --name=loty-be --labels=app=loty --strategy=source --context-dir=/
 
-TODO: explain the options...
-TODO: com base na image build X (what is an imagem build?)
-TODO: The --strategy=source flag tells OpenShift to use the S2I build process, ....
+We're using oc new-app to kick off a new build and deployment in OpenShift. This command uses the OpenShift-provided Java 17 image as the build image, pulls code from a public GitHub repo, and builds the app using the Source-to-Image strategy. We give the app a name, apply helpful labels, and define where in the repository the source code lives.
 
-It’s a fast and developer-friendly way to go from code to running app in minutes.
+It’s a fast and developer-friendly way to go from code to a running app in minutes.
 
 > oc get builds 
 > oc get builds/loty-be-1
 > oc logs -f builds/loty-be-1 
 
+This method:
+Automatically builds the app using the selected builder image (java:openjdk-17-ubi8).
+Deploys the built image into a pod.
+Creates the necessary OpenShift resources: BuildConfig, DeploymentConfig, Service, etc.
+Avoids manual containerization, while still allowing you to customize the S2I process if needed.
+
 lets see what we got in our openshift
 > oc get all
 
+Our service is running and available internally within OpenShift — that means other apps and components inside the cluster can talk to it just fine.
+But to access it from outside the cluster, like from our browser or external users, we need to expose it externally.
+For that, OpenShift provides a resource called a Route, which creates an external URL and handles the traffic routing to our service.
+We can create this easily with the oc expose command.
 > oc expose service/loty-be --hostname=loty-be.apps-crc.testing
 
-curl -s -k http://loty-be.apps-crc.testing/api/v1/loty | jq 
+If we didn’t specify a hostname, OpenShift would automatically generate a sensible default hostname based on the service name, project namespace, and cluster domain, in this case would be something like loty-be-mlga.apps-crc.testing.
 
-curl -s -k -v -X POST --data '{ "year": 1960, "name": "testing"}' -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty 
+Let’s test our app by fetching all existing entries.
+> curl -s -k http://loty-be.apps-crc.testing/api/v1/loty | jq 
 
-curl -s -k http://loty-be.apps-crc.testing/api/v1/loty/year/1960 | jq 
+Now, let’s add a new entry with year 1960 and name "testing".
+> curl -s -k -v -X POST --data '{ "year": 1960, "name": "testing"}' -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty 
+
+Finally, we’ll check that the entry we just added is stored correctly by querying it directly.
+> curl -s -k http://loty-be.apps-crc.testing/api/v1/loty/year/1960 | jq 
 
 
 ## 4.2 deploy the frontend ... 
+Lets quicky do the same for the frontend
+> oc new-app openshift/nodejs:20-ubi9-minimal~https://github.com/sunnymoon/loty-fe --name=loty-fe --labels=app=loty --strategy=source --context-dir=/
 
-oc new-app openshift/nodejs:20-ubi9-minimal~https://github.com/sunnymoon/loty-fe --name=loty-fe --labels=app=loty --strategy=source --context-dir=/
-
-oc get builds 
-oc get builds/loty-fe-1
-oc describe builds/loty-fe-1
-oc logs -f builds/loty-fe-1 
+> oc logs -f builds/loty-fe-1 
 
 lets see what we got in our openshift
 > oc get all
 
+Lets expose it
 oc expose service/loty-fe --hostname=loty.apps-crc.testing
 
 We can check it out in the web interface
 > crc console
-
-curl -s -k -v -X PUT --data @2024-reset.json -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty/16  --output /dev/null
-
-curl -s -k -v -X PUT --data @2024.json -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty/16  --output /dev/null
-
 
 ## Conclusion
 What we’ve shown today is a simplified, streamlined path, an example of how fast you can go from zero to source code to a running application using OpenShift, GitHub copilot, and modern developer tools. 
@@ -310,3 +347,9 @@ Everything we did today was from the command line. No clicks no dashboards, no m
 And that’s not just for show. It highlights that everything we’ve done is scriptable, repeatable, and easily automatable.
 
 From setting up the cluster, initializing projects, to building and deploying applications, every step can be integrated into CI/CD pipelines or developer portals to streamline onboarding and boost productivity.
+
+
+## new linkarean of the year!
+curl -s -k -v -X PUT --data @2024-reset.json -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty/16  --output /dev/null
+
+curl -s -k -v -X PUT --data @2024.json -H "Content-type: application/json"  http://loty-be.apps-crc.testing/api/v1/loty/16  --output /dev/null
